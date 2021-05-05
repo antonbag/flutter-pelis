@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:pelis/src/models/actores_model.dart';
 import 'package:pelis/src/models/pelicula_model.dart';
 
 class PeliculasProvider {
@@ -9,8 +10,9 @@ class PeliculasProvider {
   String _url = 'api.themoviedb.org';
   String _language = 'en-US';
 
-  //populares
+  //POPULARES Streams
   int _popularesPage = 0;
+  static bool cargandoPopulares = false;
   List<Pelicula> _populares = [];
 
   //Streamcontroller<lo que va a fluir por el stream
@@ -48,16 +50,54 @@ class PeliculasProvider {
     return nowPlayingPelis.items;
   }
 
-  Future<List<Pelicula>> getPopulares() async {
+  getPopulares() async {
+    //esto no tiene mucho sentido para mi. Nunca es true
+    if (cargandoPopulares) {
+      print("--cargandoPopulares return []");
+      return [];
+    }
+
     _popularesPage++;
 
     final Uri url = Uri.https(_url, '/3/movie/popular', {
       'api_key': _apikey,
       'language': _language,
-      'page':_populares.toString()
+      'page': _populares.toString()
     });
 
     //devuelvo
-    return await _procesarRespuesta(url);
+    //return await _procesarRespuesta(url);
+
+    final resp = await _procesarRespuesta(url);
+    cargandoPopulares = true;
+
+    _populares.addAll(resp);
+
+    ppSink(_populares);
+
+    cargandoPopulares = false;
+
+    //return resp;
+  }
+
+  //CAST future method
+  Future<List<Actor>> getCast(String peliId) async {
+    final Uri url = Uri.https(_url, '/3/movie/$peliId/credits', {
+      'api_key': _apikey,
+      'language': _language,
+    });
+
+    //get data from api
+    final resp = await http.get(url);
+
+    //decode data
+    final decodedData = json.decode(resp.body);
+
+
+
+    //construyo el modelo peliculas (que es una lista de tipo pelicula) con los datos de results
+    final cast = new Cast.fromJsonList(decodedData['cast']);
+
+    return cast.actores;
   }
 }
