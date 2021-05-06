@@ -83,6 +83,9 @@ class HomePage extends StatelessWidget {
     //return Container(width: 500, height: 250, color: Colors.grey);
   }
 
+
+/* 
+
   Widget _swiperPopulares() {
     final _populares = Container(
         child: Column(
@@ -97,11 +100,15 @@ class HomePage extends StatelessWidget {
     return _populares;
   }
 
+ */
+
+
   Widget _footer(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Container(
               color: Colors.black26,

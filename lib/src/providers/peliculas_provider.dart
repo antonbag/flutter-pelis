@@ -57,7 +57,7 @@ class PeliculasProvider {
       return [];
     }
 
-    _popularesPage++;
+    this._popularesPage++;
 
     final Uri url = Uri.https(_url, '/3/movie/popular', {
       'api_key': _apikey,
@@ -100,4 +100,18 @@ class PeliculasProvider {
 
     return cast.actores;
   }
+
+
+  //BUSCAR pelis future method
+  Future<List<Pelicula>> buscarPelis(String query) async {
+    final Uri url = Uri.https(_url, '/3/search/movie', {
+      'api_key': _apikey,
+      'language': _language,
+      'query': query,
+    });
+
+    return await _procesarRespuesta(url);
+  }
+
+
 }

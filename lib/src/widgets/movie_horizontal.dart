@@ -46,13 +46,16 @@ Widget _tarjeta(BuildContext context, Pelicula pelicula, _screenSize) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: FadeInImage(
-              placeholder: AssetImage('assets/img/no-image.jpg'),
-              image: NetworkImage(pelicula.getPosterImg()),
-              fit: BoxFit.cover,
-              height: 150),
+        Hero(
+          tag:pelicula.uniqueIdBanner,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: FadeInImage(
+                placeholder: AssetImage('assets/img/no-image.jpg'),
+                image: NetworkImage(pelicula.getPosterImg()),
+                fit: BoxFit.cover,
+                height: 150),
+          ),
         ),
         Container(
           padding: EdgeInsets.only(top: 10),

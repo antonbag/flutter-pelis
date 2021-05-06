@@ -11,60 +11,56 @@ class CardSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final _screenH = MediaQuery.of(context).size.height;
 
     return CarouselSlider.builder(
         itemCount: this.peliculas.length,
         itemBuilder: (context, index, realIndex) =>
-        MoviePosterImage(pelicula: this.peliculas[index]),
+            MoviePosterImage(pelicula: this.peliculas[index]),
         options: CarouselOptions(
-          height: _screenH*0.25,
-            aspectRatio: 1.8, 
-            viewportFraction: 0.8,
-            initialPage: 0,
-            enableInfiniteScroll: true,
-            reverse: false,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3),
-            autoPlayAnimationDuration: Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: true,
-            scrollDirection: Axis.horizontal,
+          height: _screenH * 0.25,
+          aspectRatio: 1.8,
+          viewportFraction: 0.8,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          autoPlay: true,
+          autoPlayInterval: Duration(seconds: 3),
+          autoPlayAnimationDuration: Duration(milliseconds: 800),
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: true,
+          scrollDirection: Axis.horizontal,
         ));
     //return Container();
   }
 }
 
- 
-
-
 class MoviePosterImage extends StatelessWidget {
-  
   final Pelicula pelicula;
 
-  const MoviePosterImage({
-    required this.pelicula
-  });
-
+  const MoviePosterImage({required this.pelicula});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-          onTap: () => Navigator.pushNamed(context, 'detalle', arguments: pelicula),
+      onTap: () => Navigator.pushNamed(context, 'detalle', arguments: pelicula),
+      child: Hero(
+        tag: pelicula.uniqueId,
+        child: Container(
+          padding: EdgeInsets.only(bottom: 2),
           child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10),
             child: FadeInImage(
-          placeholder: AssetImage('assets/img/no-image.jpg'), image: NetworkImage(pelicula.getBackgroundImg()), fit: BoxFit.cover,
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              image: NetworkImage(pelicula.getBackgroundImg()),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
   }
-
-
 }
-
-
 
 /*
     return GestureDetector(

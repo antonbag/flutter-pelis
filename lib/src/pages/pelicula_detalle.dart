@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:pelis/src/models/actores_model.dart';
 import 'package:pelis/src/models/pelicula_model.dart';
@@ -31,7 +32,7 @@ class PeliculaDetalle extends StatelessWidget {
             _posterTitulo(context, pelicula),
             _description(pelicula)
           ]
-        ) */
+        ) */ 
     );
   }
 }
@@ -47,11 +48,14 @@ Widget _crearAppBar(Pelicula pelicula) {
       centerTitle: false,
       title: Text(pelicula.title!,
           style: TextStyle(color: Colors.white70, fontSize: 16)),
-      background: FadeInImage(
-        image: NetworkImage(pelicula.getBackgroundImg()),
-        placeholder: AssetImage('assets/img/loading.gif'),
-        fadeInDuration: Duration(milliseconds: 500),
-        fit: BoxFit.cover,
+      background: Hero(
+          tag: pelicula.uniqueId,
+          child: FadeInImage(
+            image: NetworkImage(pelicula.getBackgroundImg()),
+            placeholder: AssetImage('assets/img/loading.gif'),
+            fadeInDuration: Duration(milliseconds: 500),
+            fit: BoxFit.cover,
+          ),
       ),
     ),
     actions: [],
@@ -63,25 +67,39 @@ Widget _posterTitulo(BuildContext context, Pelicula pelicula) {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image(
-                image: NetworkImage(pelicula.getPosterImg()), height: 150),
+          Hero(
+            tag:pelicula.uniqueIdBanner,
+                      child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image(
+                  image: NetworkImage(pelicula.getPosterImg()), height: 150),
+            ),
           ),
           SizedBox(width: 20),
           Flexible(
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(pelicula.title!,
-                  style: Theme.of(context).textTheme.headline4,
-                  overflow: TextOverflow.clip),
-              Text(pelicula.originalTitle!,
-                  style: Theme.of(context).textTheme.subtitle2,
-                  overflow: TextOverflow.clip),
-              Row(children: [
-                Icon(Icons.ac_unit),
-                Text(9.toString(), style: Theme.of(context).textTheme.subtitle2)
-              ])
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+              FadeIn(
+                delay:Duration(milliseconds: 200),
+                child: Text(pelicula.title!,
+                style: Theme.of(context).textTheme.headline4,
+                overflow: TextOverflow.clip),
+              ),
+
+              FadeIn(
+                  delay:Duration(milliseconds: 400),
+                    child: Text(pelicula.originalTitle!,
+                    style: Theme.of(context).textTheme.subtitle2,
+                    overflow: TextOverflow.clip),
+              ),
+              FadeIn(
+                  delay:Duration(milliseconds: 1000),
+                  child: Row(children: [
+                  Icon(Icons.ac_unit),
+                  Text(9.toString(), style: Theme.of(context).textTheme.subtitle2)
+                ]),
+              )
             ]),
           )
         ],
